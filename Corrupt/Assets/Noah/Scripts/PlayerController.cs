@@ -85,6 +85,6 @@ public class PlayerController : MonoBehaviour
 
     void LateUpdate()
     {
-        transform.position = new Vector3(transform.position.x, 1.228f, transform.position.z);
+        transform.position = new Vector3(transform.position.x, 1.228f, transform.position.z);        
     }
 }
