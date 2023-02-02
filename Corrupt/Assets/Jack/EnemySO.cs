@@ -9,5 +9,8 @@ public class EnemySO : ScriptableObject
     public float enemySpeed;
     public float detectionRange;
     public float speedMultiplier;
+    public float fireRate;
+    public float rotSpeed;
+    public float fireSpeed;
 
 }

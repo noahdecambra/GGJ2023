@@ -6,6 +6,41 @@ using UnityEngine;
 public class RunnerLogic : EnemyBase
 {
 
+    void Update()
+    {
+        if (!_foundPlayer)
+        {
+            currentState = EnemyState.Roam;
+            Debug.Log("Time to roam");
+            //Roam();
+            //FindPlayer(_detectRange);
+        }
+        else
+        {
+            currentState = EnemyState.Pursue;
+            //MoveToPlayer(_detectRange, _speedMultiplier);
+        }
+
+        switch (currentState)
+        {
+            case EnemyState.Attack:
+                Debug.Log("Attack State");
+                Attack();
+                break;
+            case EnemyState.Roam:
+                Roam();
+                FindPlayer(_detectRange);
+                break;
+            case EnemyState.Pursue:
+                MoveToPlayer(_detectRange, _speedMultiplier);
+                break;
+            case EnemyState.Die:
+                break;
+        }
+
+
+
+    }
 
     void OnCollisionEnter(Collision other)
     {
@@ -17,6 +52,10 @@ public class RunnerLogic : EnemyBase
             //currentState = EnemyState.Attack;
             Attack();
             Die();
+        }
+        else
+        {
+            return;
         }
     }
     public override void Attack()
