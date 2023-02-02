@@ -63,41 +63,7 @@ public class EnemyBase : MonoBehaviour
         _speedMultiplier = stats.speedMultiplier;
     }
 
-    void Update()
-    {
-        if (!_foundPlayer)
-        {
-            currentState = EnemyState.Roam;
-            Debug.Log("Time to roam");
-            //Roam();
-            //FindPlayer(_detectRange);
-        }
-        else
-        {
-            currentState = EnemyState.Pursue;
-            //MoveToPlayer(_detectRange, _speedMultiplier);
-        }
-
-        switch (currentState)
-        {
-            case EnemyState.Attack:
-                Debug.Log("Attack State");
-                Attack();
-                break;
-            case EnemyState.Roam:
-                Roam();
-                FindPlayer(_detectRange);
-                break;
-            case EnemyState.Pursue:
-                MoveToPlayer(_detectRange, _speedMultiplier);
-                break;
-            case EnemyState.Die:
-                break;
-        }
-
-
-
-    }
+    
     protected void MoveToPlayer(float detectionRange, float speedMultiplier = 1.0f, Transform currentTarget = null)
     {
         if (_dead != false)
@@ -148,7 +114,7 @@ public class EnemyBase : MonoBehaviour
 
             if (playerTarget != null && shortestDistance > 0)
             {
-                Debug.Log(playerTarget.name + "Target Set");
+                Debug.Log(playerTarget.name + "Target Set: "+ playerTarget.position);
                 _foundPlayer = true;
                 return playerTarget;
 
@@ -229,9 +195,10 @@ public class EnemyBase : MonoBehaviour
     {
         Collider[] allies = Physics.OverlapSphere(gameObject.transform.position, alertRange, ally);
 
-        foreach (var ally in allies)
+        foreach (var mAlly in allies)
         {
-            ally.SendMessage("Alerted",(FindPlayer(_detectRange)));
+            mAlly.gameObject.SendMessage("Alerted",(FindPlayer(_detectRange)));
+            Debug.Log("Alerted: "+ mAlly.gameObject.name);
         }
     }
 
