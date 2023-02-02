@@ -8,7 +8,11 @@ public class PlayerController : MonoBehaviour
     public float dashDuration = 0.2f;
     float dashStartTime;
     bool isDashing;
+
     public Camera camera;
+    public float rotationSpeed = 10f;
+
+    public ParticleSystem flame;
 
     private Vector3 velocity;
     private float dashTime;
@@ -48,12 +52,35 @@ public class PlayerController : MonoBehaviour
 
         transform.position += velocity * Time.deltaTime;
 
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition = camera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, camera.transform.position.y - transform.position.y));
-        mousePosition = new Vector3(mousePosition.x, transform.position.y, mousePosition.z);
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
+            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
 
-        Quaternion targetRotation = Quaternion.LookRotation(mousePosition - transform.position);
-        transform.rotation = Quaternion.Euler(0f, targetRotation.eulerAngles.y, 0f);
+            if (Physics.Raycast(ray, out hit))
+            {
+                Vector3 lookDirection = (hit.point - transform.position);
+                lookDirection.y = 0f;
+                lookDirection = lookDirection.normalized;
+                Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            }
+
+            var emission = flame.emission;
+            emission.rateOverTime = 200f;
+        }
+        else 
+        {
+            var emission = flame.emission;
+            emission.rateOverTime = 0f;
+
+            if (movement != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(movement);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            }
+        }
+        
     }
 
     void LateUpdate()
