@@ -77,15 +77,19 @@ public class EnemyBase : MonoBehaviour
             
         }
 
-        
-        _agent.destination = currentTarget.position;
-        _agent.speed = stats.enemySpeed * speedMultiplier;
+        if (currentTarget != null)
+        {
+            _agent.destination = currentTarget.position;
+            _agent.speed = stats.enemySpeed * speedMultiplier;
+        }
+       
     }
 
     protected Transform FindPlayer(float detectionRange)
     {
         Transform playerTarget = null;
         Collider[] players = Physics.OverlapSphere(gameObject.transform.position, detectionRange, player);
+        //Debug.Log(players.Length);
         if (players.Length > 0)
         {
 
@@ -114,7 +118,7 @@ public class EnemyBase : MonoBehaviour
 
             if (playerTarget != null && shortestDistance > 0)
             {
-                Debug.Log(playerTarget.name + "Target Set: "+ playerTarget.position);
+                //Debug.Log(playerTarget.name + "Target Set: "+ playerTarget.position);
                 _foundPlayer = true;
                 return playerTarget;
 
@@ -122,7 +126,7 @@ public class EnemyBase : MonoBehaviour
         }
 
         _foundPlayer = false;
-        Debug.Log("Target not found");
+        //Debug.Log("Target not found");
         return null;
        
         
@@ -189,6 +193,11 @@ public class EnemyBase : MonoBehaviour
     public void TakeDamage(int damageDone)
     {
         health -= damageDone;
+        Debug.Log(name+" health= "+health);
+        if (health<= 0)
+        {
+            currentState = EnemyState.Die;
+        }
     }
 
     public void AlertAllies(float alertRange)
@@ -202,6 +211,7 @@ public class EnemyBase : MonoBehaviour
         }
     }
 
+    
     
 }
 

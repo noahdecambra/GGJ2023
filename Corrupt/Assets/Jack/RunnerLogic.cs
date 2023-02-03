@@ -35,6 +35,7 @@ public class RunnerLogic : EnemyBase
                 MoveToPlayer(_detectRange, _speedMultiplier);
                 break;
             case EnemyState.Die:
+                Die();
                 break;
         }
 
@@ -45,18 +46,18 @@ public class RunnerLogic : EnemyBase
     void OnCollisionEnter(Collision other)
     {
         Debug.Log("Collided");
-        if (other.gameObject == FindPlayer(_detectRange).gameObject)
+        if (other.gameObject != FindPlayer(_detectRange).gameObject)
         {
-
+            Debug.Log("Not a player");
+            return;
+           
+        }
+        
             Debug.Log("Collided with a Player");
-            //currentState = EnemyState.Attack;
+            
             Attack();
             Die();
-        }
-        else
-        {
-            return;
-        }
+        
     }
     public override void Attack()
     {
@@ -65,12 +66,13 @@ public class RunnerLogic : EnemyBase
         try
         {
             Debug.Log("Trying Attack");
-            var _targetScript = target.gameObject.GetComponent<PlayerBase>(); //PlayerBase would be whatever the script controlling player health is
+            var _targetScript = target.gameObject.GetComponent<PlayerController>(); //PlayerBase would be whatever the script controlling player health is
             _targetScript.TakeDamage(damage); //calls function to lower player health
         }
         catch (Exception e)
         {
             Debug.Log("No Player Script found on target");
+            //target.gameObject.GetComponentInParent<PlayerController>().TakeDamage(damage);
             throw;
         }
         base.Attack();

@@ -25,6 +25,10 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Vector3 velocity;
 
+    public int health;
+
+    
+
     //public Animator anim;
 
     private void Start()
@@ -165,5 +169,10 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         rb.AddForce(velocity - rb.velocity, ForceMode.VelocityChange);
+    }
+
+    public void TakeDamage(int damageToTake)
+    {
+        health -= damageToTake;
     }
 }
