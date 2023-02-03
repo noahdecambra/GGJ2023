@@ -16,11 +16,11 @@ public class BulletController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<PlayerBase>().TakeDamage(_damage);
+            other.gameObject.GetComponent<PlayerController>().TakeDamage(_damage);
             
         }
 
-        if (other.gameObject.name == "Cube (1)") 
+        if (other.gameObject.CompareTag("LaunchPoint")) //need to change once models are implemented- bandaid fix for testing
         {
             return;
         }

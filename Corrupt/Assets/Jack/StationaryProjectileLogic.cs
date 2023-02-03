@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StationaryProjectileLogic : EnemyBase
@@ -50,6 +51,12 @@ public class StationaryProjectileLogic : EnemyBase
     // Update is called once per frame
     void Update()
     {
+        switch (currentState)
+        {
+          case EnemyState.Die:
+                Die();
+                break;
+        }
         _target = FindPlayer(_detectRange);
         if (_target != null)
         {
@@ -73,14 +80,17 @@ public class StationaryProjectileLogic : EnemyBase
            return;
        }
 
+       if (_target != null)
+       {
+           Vector3 dir = _target.position - transform.position;
+           //dir.y = dir.y * -1;
+           Quaternion lookRot = Quaternion.LookRotation(dir); //Y is inverted for some reason
+           Vector3 rot = Quaternion.Lerp(rotPoint.rotation, lookRot, Time.deltaTime * _rotSpeed).eulerAngles;
+           rotPoint.rotation = Quaternion.Euler(0f, rot.y, 0f);
+       }
+     
        
-       Vector3 dir = _target.position - transform.position;
-       //dir.y = dir.y * -1;
-       Quaternion lookRot = Quaternion.LookRotation(dir); //Y is inverted for some reason
-       Vector3 rot = Quaternion.Lerp(rotPoint.rotation, lookRot, Time.deltaTime * _rotSpeed).eulerAngles;
-       rotPoint.rotation = Quaternion.Euler(0f, rot.y, 0f);
-       
-       Debug.Log("target: "+_target.name + "\ndir: "+dir +"\nLookRot: "+lookRot);
+       //Debug.Log("target: "+_target.name + "\ndir: "+dir +"\nLookRot: "+lookRot);
 
     }
 
@@ -93,5 +103,10 @@ public class StationaryProjectileLogic : EnemyBase
         bulletController.SetDamage(damage);
 
         base.Attack();
+    }
+    public override void Die()
+    {
+        base.Die();
+        Destroy(gameObject, .25f);
     }
 }

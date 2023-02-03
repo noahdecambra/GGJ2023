@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbda6dd4ac9a58d4cb0e8328e47e7d10, type: 3}
   m_Name: Test
   m_EditorClassIdentifier: 
-  enemyName: Test One
+  enemyName: Runner
   enemyDamage: 5
   enemyHealth: 56
   enemySpeed: 3
   detectionRange: 5
   speedMultiplier: 3
+  fireRate: 0
+  rotSpeed: 0
+  fireSpeed: 0
