@@ -1,21 +1,31 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     public float speed = 10f;
     public float dashSpeed = 20f;
-    public float dashCooldown = 2f;
     public float dashDuration = 0.2f;
-    float dashStartTime;
-    bool isDashing;
+    public float dashCoolDown = 2f;
+    private float dashTime;
+    private bool isDashing;
 
-    public Camera camera;
+    public new Camera camera;
     public float rotationSpeed = 10f;
 
     public ParticleSystem flame;
+    public Slider fuelSlider;
+    public float fuel;
+    public float fuelRate;
+    float maxFuel;
 
+    private bool recharging;
+
+    private Rigidbody rb;
     private Vector3 velocity;
-    private float dashTime;
+
+    //public Animator anim;
 
     private void Start()
     {
@@ -23,6 +33,14 @@ public class PlayerController : MonoBehaviour
         {
             camera = Camera.main;
         }
+
+        rb = GetComponent<Rigidbody>();
+
+        //anim = GetComponent<Animator>();
+
+        maxFuel = fuel;
+        var emission = flame.emission;
+        emission.rateOverTime = 0f;
     }
 
     void Update()
@@ -33,14 +51,13 @@ public class PlayerController : MonoBehaviour
         Vector3 movement = new Vector3(horizontal, 0f, vertical);
         movement = movement.normalized;
 
-        if (Input.GetKey(KeyCode.Space) && Time.time > dashTime + dashCooldown)
+        if (Input.GetKey(KeyCode.Space) && Time.time > dashTime + dashCoolDown)
         {
-            dashStartTime = Time.time;
             isDashing = true;
-            velocity = movement * dashSpeed;
             dashTime = Time.time;
         }
-        if (isDashing && Time.time - dashStartTime < dashDuration)
+
+        if (isDashing && Time.time - dashTime < dashDuration)
         {
             velocity = movement * dashSpeed;
         }
@@ -50,10 +67,30 @@ public class PlayerController : MonoBehaviour
             velocity = movement * speed;
         }
 
-        transform.position += velocity * Time.deltaTime;
-
-        if (Input.GetKey(KeyCode.Mouse1))
+        /*if (Input.GetKey(KeyCode.Mouse0))
         {
+            anim.SetTrigger("Mele");
+        }*/
+
+        fuelSlider.maxValue = 100;
+        fuelSlider.minValue = 0;
+        fuelSlider.value = fuel;
+
+        if (fuel == 0 && !recharging) 
+        {
+            recharging = true;
+            StartCoroutine(RechargeFuel());
+        }
+
+        if (Input.GetKey(KeyCode.Mouse1) && fuel > 0 && !recharging)
+        {
+            if (fuel != 0)
+            {
+                fuel -= fuelRate * Time.deltaTime;                
+                var emission = flame.emission;
+                emission.rateOverTime = 200f;
+            }
+
             Ray ray = camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -64,27 +101,69 @@ public class PlayerController : MonoBehaviour
                 lookDirection = lookDirection.normalized;
                 Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            }            
+        }
+        else
+        {
+            if (fuel == 100)
+            {
+                recharging = false;
             }
 
-            var emission = flame.emission;
-            emission.rateOverTime = 200f;
-        }
-        else 
-        {
-            var emission = flame.emission;
-            emission.rateOverTime = 0f;
+            else
+            {
+                if (Input.GetKeyUp(KeyCode.Mouse1))
+                {
+                    var emission = flame.emission;
+                    emission.rateOverTime = 0f;
+                }
+                if (fuel != 100)
+                {
+                    fuel += fuelRate * Time.deltaTime;
+                }
+            }
+
+            if (fuel != 100)
+            {
+                var emission = flame.emission;
+                emission.rateOverTime = 0f;
+            }
 
             if (movement != Vector3.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(movement);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
             }
+        }        
+        
+        if  (fuel < 0)
+        {
+            fuel = 0;
+        }
+        else if (fuel > 100)
+        {
+            fuel = 100;
         }
         
     }
 
-    void LateUpdate()
+    private IEnumerator RechargeFuel()
     {
-        transform.position = new Vector3(transform.position.x, 1.228f, transform.position.z);        
+        float waitStart = Time.time;
+        float waitDuration = 4f;
+        while (fuel < 100)
+        {
+            fuel += fuelRate * Time.deltaTime;
+            if (Time.time - waitStart >= waitDuration) 
+            {
+                break;
+            }
+            yield return null;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        rb.AddForce(velocity - rb.velocity, ForceMode.VelocityChange);
     }
 }

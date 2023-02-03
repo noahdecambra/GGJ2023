@@ -352,12 +352,16 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.VSCode.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
+"Assets/Jack/BulletController.cs"
 "Assets/Jack/EnemyBase.cs"
 "Assets/Jack/EnemySO.cs"
 "Assets/Jack/PlayerBase.cs"
 "Assets/Jack/RunnerLogic.cs"
+"Assets/Jack/StationaryProjectileLogic.cs"
 "Assets/Noah/Scripts/CameraFollow.cs"
+"Assets/Noah/Scripts/OptionsMenu.cs"
 "Assets/Noah/Scripts/PlayerController.cs"
+"Assets/Noah/Scripts/StartMenu.cs"
 -langversion:9.0
 
 /deterministic
