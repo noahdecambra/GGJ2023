@@ -4,15 +4,21 @@ using UnityEngine.SceneManagement;
 public class StartMenu : MonoBehaviour
 {
     public bool isOptions;
+    public bool isIntro;
+    public Animator anim;
+    public GameObject introUI;
     public GameObject optionsMenuUI;
+    public GameObject optionsButton;
+    public GameObject startText;
+    public GameObject quitButton;
 
     void Update()
     {
-        if (Input.anyKeyDown && Input.GetKeyDown(KeyCode.Escape) == false && Input.GetKeyDown(KeyCode.Mouse0) == false)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            SceneManager.LoadScene("Levels");
+            Intro();
         }
-        else if(Input.GetKeyDown(KeyCode.Escape))
+        else if(Input.GetKeyDown(KeyCode.Escape) && isIntro == false)
         {
             if(isOptions)
             {
@@ -25,21 +31,30 @@ public class StartMenu : MonoBehaviour
         }
     }
 
+    public void Intro()
+    {
+        introUI.SetActive(true);
+        isIntro = true;
+        if (isIntro)
+        {
+            optionsButton.SetActive(false);
+            quitButton.SetActive(false);
+        }
+    }
     public void Options()
     {
         optionsMenuUI.SetActive(true);
         isOptions = true;
+        optionsButton.SetActive(false);
+        startText.SetActive(false);
     }
 
     public void MainMenu()
     {
         optionsMenuUI.SetActive(false);
         isOptions = false;
-    }
-
-    public void Levels()
-    {
-        SceneManager.LoadScene("Levels");
+        optionsButton.SetActive(true);
+        startText.SetActive(true);
     }
 
     public void QuitGame()
