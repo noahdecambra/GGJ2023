@@ -16,8 +16,8 @@ MonoBehaviour:
   enemyDamage: 5
   enemyHealth: 5
   enemySpeed: 0
-  detectionRange: 20
+  detectionRange: 30
   speedMultiplier: 0
-  fireRate: 1
+  fireRate: 0.5
   rotSpeed: 10
-  fireSpeed: 50
+  fireSpeed: 1000

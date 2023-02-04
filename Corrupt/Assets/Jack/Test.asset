@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Runner
   enemyDamage: 5
-  enemyHealth: 56
-  enemySpeed: 3
-  detectionRange: 5
-  speedMultiplier: 3
+  enemyHealth: 15
+  enemySpeed: 6
+  detectionRange: 10
+  speedMultiplier: 2
   fireRate: 0
   rotSpeed: 0
   fireSpeed: 0

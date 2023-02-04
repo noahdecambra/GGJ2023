@@ -45,18 +45,20 @@ public class RunnerLogic : EnemyBase
 
     void OnCollisionEnter(Collision other)
     {
-        Debug.Log("Collided");
-        if (other.gameObject != FindPlayer(_detectRange).gameObject)
+        Debug.Log("Collided with "+other.gameObject.name);
+        if (!other.gameObject.CompareTag("Player"))
         {
             Debug.Log("Not a player");
             return;
            
         }
         
-            Debug.Log("Collided with a Player");
+        Debug.Log("Collided with a Player");
             
-            Attack();
-            Die();
+        Attack();
+        gameObject.GetComponent<Collider>().enabled = false;
+        gameObject.GetComponent<Rigidbody>().Sleep();
+        Die();
         
     }
     public override void Attack()
