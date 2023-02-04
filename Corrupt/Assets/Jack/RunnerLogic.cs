@@ -8,18 +8,16 @@ public class RunnerLogic : EnemyBase
 
     void Update()
     {
-        if (!_foundPlayer)
+       
+        if (_foundPlayer && CheckVisionOfPlayer())
         {
-            currentState = EnemyState.Roam;
-            Debug.Log("Time to roam");
-            //Roam();
-            //FindPlayer(_detectRange);
-        }
-        else
-        {
+           
             currentState = EnemyState.Pursue;
             //MoveToPlayer(_detectRange, _speedMultiplier);
         }
+        currentState = EnemyState.Roam;
+       
+
 
         switch (currentState)
         {

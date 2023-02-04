@@ -21,6 +21,7 @@ public class EnemyBase : MonoBehaviour
     public LayerMask player;
     public LayerMask ground;
     public LayerMask ally;
+    public LayerMask wall;
 
     public int health { private set; get; }
     public int damage { private set; get; }
@@ -141,7 +142,7 @@ public class EnemyBase : MonoBehaviour
 
         _roamDestination =new Vector3(transform.position.x + xDest, transform.position.y,
             transform.position.z + zDest);
-        _hasPointToRoam = Physics.Raycast(_roamDestination, -transform.up, ground);
+        _hasPointToRoam = Physics.Raycast(_roamDestination, -transform.up, wall);
 
 
 
@@ -180,7 +181,7 @@ public class EnemyBase : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log("Can't move but found player!");
+            //Debug.Log("Can't move but found player!");
         }
     }
 
@@ -207,11 +208,42 @@ public class EnemyBase : MonoBehaviour
         foreach (var mAlly in allies)
         {
             mAlly.gameObject.SendMessage("Alerted",(FindPlayer(_detectRange)));
-            Debug.Log("Alerted: "+ mAlly.gameObject.name);
+            //Debug.Log("Alerted: "+ mAlly.gameObject.name);
         }
     }
 
-    
-    
+    protected bool CheckVisionOfPlayer()
+    {
+        bool hasVision = false;
+
+        Collider[] players = Physics.OverlapSphere(transform.position, _detectRange, player);
+
+        if (players.Length > 0)
+        {
+
+            var target = players[0].transform;
+
+            var direction = (target.position - transform.position).normalized;
+            var distance = Vector3.Distance(transform.position, target.position);
+
+            // Using the origin, direction, and distance, send out a ray.
+            // If we are ever blocked, the target blocked us!
+            //Debug.DrawRay(transform.position, direction, Color.green);
+            if (!Physics.Raycast(transform.position, direction, distance, wall))
+            {
+                Debug.Log("I have line of sight with the game object!");
+                hasVision = true;
+            }
+            else
+            {
+                Debug.Log("NO LOS");
+                hasVision = false;
+            }
+        }
+        //Debug.Log(hasVision);
+        return hasVision;
+    }
+
+
 }
 

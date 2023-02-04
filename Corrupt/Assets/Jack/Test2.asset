@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Test2
   m_EditorClassIdentifier: 
   enemyName: Stationary
-  enemyDamage: 5
-  enemyHealth: 5
+  enemyDamage: 8
+  enemyHealth: 7
   enemySpeed: 0
-  detectionRange: 30
+  detectionRange: 60
   speedMultiplier: 0
-  fireRate: 0.5
+  fireRate: 1
   rotSpeed: 10
-  fireSpeed: 1000
+  fireSpeed: 2500

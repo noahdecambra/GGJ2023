@@ -58,7 +58,7 @@ public class StationaryProjectileLogic : EnemyBase
                 break;
         }
         _target = FindPlayer(_detectRange);
-        if (_target != null)
+        if (_target != null && CheckVisionOfPlayer())
         {
             AlertAllies(_detectRange);
             

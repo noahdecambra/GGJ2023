@@ -23,7 +23,7 @@ public class HPBarManager : MonoBehaviour
         var fillArea = gameObject.transform.GetChild(1);
         _fill = fillArea.GetChild(0).GetComponent<Image>();
         _maxHealth = GameObject.FindGameObjectWithTag(objectTag).GetComponent<PlayerController>().health;
-        Debug.Log(_maxHealth);
+        //Debug.Log(_maxHealth);
         _healthBar.maxValue = _maxHealth;
         _healthBar.value = _maxHealth;
     }

@@ -174,5 +174,6 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damageToTake)
     {
         health -= damageToTake;
+        Debug.Log(health);
     }
 }
