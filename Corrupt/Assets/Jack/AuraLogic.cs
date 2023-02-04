@@ -74,4 +74,10 @@ public class AuraLogic : EnemyBase
         base.Die();
         Destroy(gameObject, .25f);
     }
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(gameObject.transform.position, _detectRange);
+    }
 }
+

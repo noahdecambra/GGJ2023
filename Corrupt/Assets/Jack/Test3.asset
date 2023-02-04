@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Test3
   m_EditorClassIdentifier: 
   enemyName: Aura
-  enemyDamage: 3
+  enemyDamage: 4
   enemyHealth: 10
   enemySpeed: 0
-  detectionRange: 15
+  detectionRange: 25
   speedMultiplier: 0
-  fireRate: 3
+  fireRate: 2.5
   rotSpeed: 0
   fireSpeed: 0

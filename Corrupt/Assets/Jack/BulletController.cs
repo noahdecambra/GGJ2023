@@ -10,6 +10,7 @@ public class BulletController : MonoBehaviour
     public void SetDamage(int val)
     {
         _damage = val;
+        Destroy(gameObject,1);
     }
 
     void OnCollisionEnter(Collision other)
@@ -20,7 +21,7 @@ public class BulletController : MonoBehaviour
             
         }
 
-        if (other.gameObject.CompareTag("LaunchPoint")) //need to change once models are implemented- bandaid fix for testing
+        else if (other.gameObject.CompareTag("Enemy")) 
         {
             return;
         }
