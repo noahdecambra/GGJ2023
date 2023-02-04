@@ -7,15 +7,26 @@ public class FlamethrowerDamageLogic : MonoBehaviour
 {
     public float damage = .00001f;
     private float _damageTally = 0;
-    private float _damageTallyMax = 200;
+    private float _damageTallyMax = 100;
     private int _sentDamage;
     public ParticleSystem part;
-    public List<ParticleCollisionEvent> collisionEvents;
-
+    private Transform _tip;
+    
     void Start()
     {
         part = GetComponent<ParticleSystem>();
-        collisionEvents = new List<ParticleCollisionEvent>();
+        _tip = part.transform.parent;
+        part.transform.parent = null;
+        part.transform.localScale = new Vector3(1, 1, 1);
+        
+       
+    }
+
+    void Update()
+    {
+        part.transform.position = _tip.position;
+        part.transform.rotation = _tip.rotation;
+        
     }
     // Start is called before the first frame update
     void OnParticleCollision(GameObject other)

@@ -39,7 +39,7 @@ public class AuraLogic : EnemyBase
         if (_target != null)
         {
             Debug.Log(_target.name);
-            if (Physics.CheckSphere(gameObject.transform.position, _range, player))
+            if (Physics.CheckSphere(gameObject.transform.position, _range, player) && CheckVisionOfPlayer())
             {
                 Debug.Log("Players in range = true");
                 if (_fireCountdown <= 0f)
