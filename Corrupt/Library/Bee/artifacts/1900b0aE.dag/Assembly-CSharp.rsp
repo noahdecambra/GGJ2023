@@ -361,10 +361,12 @@
 "Assets/Jack/PlayerBase.cs"
 "Assets/Jack/RunnerLogic.cs"
 "Assets/Jack/StationaryProjectileLogic.cs"
+"Assets/Noah/Scripts/AudioManager.cs"
 "Assets/Noah/Scripts/CameraFollow.cs"
 "Assets/Noah/Scripts/IntroType.cs"
 "Assets/Noah/Scripts/OptionsMenu.cs"
 "Assets/Noah/Scripts/PlayerController.cs"
+"Assets/Noah/Scripts/Sound.cs"
 "Assets/Noah/Scripts/StartMenu.cs"
 "Assets/Noah/Scripts/TypingEffect.cs"
 -langversion:9.0
