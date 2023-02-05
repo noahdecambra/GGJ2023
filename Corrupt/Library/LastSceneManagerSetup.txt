@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Final Game/Start Menu.unity
+- path: Assets/Final Game/Levels.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
