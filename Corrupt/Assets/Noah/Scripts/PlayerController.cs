@@ -20,16 +20,12 @@ public class PlayerController : MonoBehaviour
     public float fuelRate;
     float maxFuel;
 
-    private bool recharging;
+    public bool recharging;
 
     private Rigidbody rb;
     private Vector3 velocity;
 
     public int health;
-
-    
-
-    //public Animator anim;
 
     private void Start()
     {
@@ -39,8 +35,6 @@ public class PlayerController : MonoBehaviour
         }
 
         rb = GetComponent<Rigidbody>();
-
-        //anim = GetComponent<Animator>();
 
         maxFuel = fuel;
         var emission = flame.emission;
@@ -71,11 +65,6 @@ public class PlayerController : MonoBehaviour
             velocity = movement * speed;
         }
 
-        /*if (Input.GetKey(KeyCode.Mouse0))
-        {
-            anim.SetTrigger("Mele");
-        }*/
-
         fuelSlider.maxValue = 100;
         fuelSlider.minValue = 0;
         fuelSlider.value = fuel;
@@ -84,15 +73,21 @@ public class PlayerController : MonoBehaviour
         {
             recharging = true;
             StartCoroutine(RechargeFuel());
+
+            //FindObjectOfType<AudioManager>().StopPlaying("Flamethrower");
         }
 
         if (Input.GetKey(KeyCode.Mouse1) && fuel > 0 && !recharging)
         {
+            FindObjectOfType<AudioManager>().Play("Flamethrower");
+
             if (fuel != 0)
             {
                 fuel -= fuelRate * Time.deltaTime;                
                 var emission = flame.emission;
                 emission.rateOverTime = 200f;
+
+                //FindObjectOfType<AudioManager>().Play("Flamethrower");
             }
 
             Ray ray = camera.ScreenPointToRay(Input.mousePosition);
@@ -120,6 +115,8 @@ public class PlayerController : MonoBehaviour
                 {
                     var emission = flame.emission;
                     emission.rateOverTime = 0f;
+
+                    //FindObjectOfType<AudioManager>().StopPlaying("Flamethrower");
                 }
                 if (fuel != 100)
                 {
@@ -137,6 +134,12 @@ public class PlayerController : MonoBehaviour
             {
                 Quaternion targetRotation = Quaternion.LookRotation(movement);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+
+                //FindObjectOfType<AudioManager>().Play("Footsteps");
+            }
+            else
+            {
+                //FindObjectOfType<AudioManager>().StopPlaying("Footsteps");
             }
         }        
         
